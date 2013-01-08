@@ -1,9 +1,4 @@
- _   _           _                                   ______ _          
-| | | |         | |                                  |  ___(_)         
-| | | |_ __   __| | ___ _ __ ___  ___ ___  _ __ ___  | |_   _ _ __ ___ 
-| | | | '_ \ / _` |/ _ \ '__/ __|/ __/ _ \| '__/ _ \ |  _| | | '__/ _ \
-| |_| | | | | (_| |  __/ |  \__ \ (_| (_) | | |  __/ | |   | | | |  __/
- \___/|_| |_|\__,_|\___|_|  |___/\___\___/|_|  \___| \_|   |_|_|  \___|
+#Underscore-Fire
 
 This underscore add-on was written to allow you to fire multiple functions at the same time and get a single callback when they are all completed. There is no reliance on the DOM, so you can use it in the browser or in Node.
 
