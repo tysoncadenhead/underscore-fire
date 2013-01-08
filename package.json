@@ -1,0 +1,24 @@
+{
+  "name": "underscore-fire",
+  "description": "Fires multiple functions with a single callback",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tysoncadenhead/underscore-fire.git"
+  },
+  "engines": {
+    "node": "~0.8.3"
+  },
+  "main": "./lib/underscore-fire.min.js",
+  "dependencies": {
+    "underscore": ">=1.4.3"
+  },
+  "devDependencies": {
+    "mocha": ">=1.7.4",
+    "assert": ">=0.4.9"
+  },
+  "optionalDependencies": {},
+  "readme": "",
+  "_id": "underscore-fire@0.0.1",
+  "_from": "underscore-fire"
+}

@@ -1,0 +1,6 @@
+{
+    "output": "lib",
+    "anvil.uglify": {
+        "all": "true"
+    }
+}
