@@ -1,7 +1,7 @@
 {
   "name": "underscore-fire",
-  "description": "Fires multiple functions with a single callback",
-  "version": "0.0.1",
+  "description": "Fires multiple asynchronous functions with a single callback",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git@github.com:tysoncadenhead/underscore-fire.git"

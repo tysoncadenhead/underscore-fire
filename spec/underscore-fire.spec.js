@@ -9,7 +9,7 @@ var assert = require("assert");
 
     "use strict";
 
-    describe("Single Function", function () {
+    describe("underscore-fire", function () {
         describe("_.fire", function () {
             it("Should fire a single function", function (done) {
 
@@ -24,11 +24,7 @@ var assert = require("assert");
                 });
 
             });
-        });
-    });
 
-    describe("Multiple Functions", function () {
-        describe("_.fire", function () {
             it("Should fire each function and return the results in an array for the callback", function (done) {
                 
                 var fns = [function () {
@@ -48,11 +44,7 @@ var assert = require("assert");
                 });
 
             });
-        });
-    });
 
-    describe("Asynchronous Callback", function () {
-        describe("_.fire", function () {
             it("Should return all of the results in order asynchronously", function (done) {
                 
                 var fns = [function (done) {
@@ -78,11 +70,7 @@ var assert = require("assert");
                 });
 
             });
-        });
-    });
 
-    describe("Shared Filter", function () {
-        describe("_.fire", function () {
             it("Should pass in data from the filter", function (done) {
                 
                 var fns = [function (done, hello, exclamation) {
@@ -107,11 +95,7 @@ var assert = require("assert");
                 }, filters);
 
             });
-        });
-    });
 
-    describe("Unique Filters", function () {
-        describe("_.fire", function () {
             it("Should pass in data from the filters", function (done) {
                 
                 var fns = [function (done, hello) {
@@ -141,11 +125,7 @@ var assert = require("assert");
                 }, filters);
 
             });
-        });
-    });
 
-    describe("Filter as a function", function () {
-        describe("_.fire", function () {
             it("Should pass in data from the filters function", function (done) {
 
                 var fns = [function (done, hello) {
@@ -186,6 +166,90 @@ var assert = require("assert");
                 }, filters);
 
             });
+
+            it("Should not set the correct context for the functions we fire because it is not passed in", function (done) {
+
+                var Context, context, fns = [function () {
+                    assert.equal(typeof this, "undefined");
+                    return true;
+                }];
+
+                Context = function () {
+
+                    this.isRightContent = true;
+
+                    this.fire = function () {
+
+                        _.fire( fns, function (data) {
+                            done();
+                        }, []);
+                        
+                    };
+
+                };
+
+                context = new Context();
+                context.fire();
+
+            });
+
+            it("Should set the correct context for the functions we fire", function (done) {
+
+                var Context, context, fns = [function (done) {
+                    assert.equal(this.isRightContent, true);
+                    return true;
+
+                }, function (done) {
+                    assert.equal(this.isRightContent, true);
+                    return true;
+                    
+                }];
+
+                Context = function () {
+
+                    this.isRightContent = true;
+
+                    this.fire = function () {
+
+                        _.fire( fns, function (data) {
+                            done();
+                        }, [], this);
+                        
+                    };
+
+                };
+
+                context = new Context();
+                context.fire();
+
+            });
+
+            it("Should set the correct context for the callback", function (done) {
+
+                var Context, context, fns = [function (done) {
+                    return true;
+                }];
+
+                Context = function () {
+
+                    this.isRightContent = true;
+
+                    this.fire = function () {
+
+                        _.fire( fns, function (data) {
+                            assert.equal(this.isRightContent, true);
+                            done();
+                        }, [], this);
+                        
+                    };
+
+                };
+
+                context = new Context();
+                context.fire();
+
+            });
+
         });
     });
 

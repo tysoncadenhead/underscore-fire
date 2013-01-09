@@ -17,7 +17,7 @@ Author: Tyson Cadenhead | tysoncadenheadAtGmailDotCom | tysonjs.com
 
     "use strict";
 
-    _.fire = function (fns, callback, before) {
+    _.fire = function (fns, callback, before, context) {
 
         var numberCalled = 0,
             returnObjects = [];
@@ -30,7 +30,7 @@ Author: Tyson Cadenhead | tysoncadenheadAtGmailDotCom | tysonjs.com
 
             // Fire the callback
             if (numberCalled === fns.length) {
-                callback(returnObjects);
+                callback.call(context || this || undefined, returnObjects);
             }
         }
 
@@ -60,7 +60,7 @@ Author: Tyson Cadenhead | tysoncadenheadAtGmailDotCom | tysonjs.com
             params = params.reverse();
 
             // Fire the function
-            returnObject = fn.apply(undefined, params);
+            returnObject = fn.apply(context || this || undefined, params);
 
             // If the function returns any data, we'll count it as being done
             if (returnObject) {

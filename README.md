@@ -168,3 +168,36 @@ _.fire( fns, function (data) {
 
 }, filters);
 ```
+
+### Setting the context
+
+You can pass the context for the functions and the callback as the fourth parameter in the _.fire() function. If the context is passed in, "this" will refer to the context you have provided.
+
+```javascript
+var fns = [function () {
+
+    // true
+    console.log(this.isRightContext);
+    return true;
+}];
+
+var Context = function () {
+
+    this.isRightContext = true;
+
+    this.fire = function () {
+
+        _.fire( fns, function (data) {
+            
+            // true
+            console.log(this.isRightContext);
+            
+        }, [], this);
+        
+    };
+
+};
+
+var context = new Context();
+context.fire();
+```
