@@ -10,7 +10,7 @@ The only hard dependency is [underscore](https://github.com/documentcloud/unders
 
 While the _.fire method is very powerful, it only has three parameters:
 
-#### _.fire( array [functions to fire], function [callback], function or array [filter] );
+#### _.fire( array [functions to fire], function [callback], function or array [filter], context );
 
 The functions to fire will each be called by passing in any data from the optional filter parameter. Once all of the functions have been completed, the callback function will fire with an array of all of the results from the functions as its only parameter.
 
