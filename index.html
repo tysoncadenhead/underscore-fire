@@ -36,43 +36,216 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <p>This underscore add-on was written to allow you to fire multiple functions at the same time and get a single callback when they are all completed. There is no reliance on the DOM, so you can use it in the browser or in Node.</p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>Please note that there is currently no support for chaining function calls and that all of the functions will be fired at the same time.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>The only hard dependency is <a href="https://github.com/documentcloud/underscore">underscore</a> or <a href="https://github.com/bestiejs/lodash">lodash</a>.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>While the _.fire method is very powerful, it only has three parameters:</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h4>
+<a name="_fire-array-functions-to-fire-function-callback-function-or-array-filter-context-" class="anchor" href="#_fire-array-functions-to-fire-function-callback-function-or-array-filter-context-"><span class="octicon octicon-link"></span></a>_.fire( array [functions to fire], function [callback], function or array [filter], context );</h4>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>The functions to fire will each be called by passing in any data from the optional filter parameter. Once all of the functions have been completed, the callback function will fire with an array of all of the results from the functions as its only parameter.</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Maybe a few examples would be helpful...</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="firing-a-single-function" class="anchor" href="#firing-a-single-function"><span class="octicon octicon-link"></span></a>Firing a single function</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>You'd probably never need to fire a single function with Underscore-Fire, but this is how you would do it.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"hello world"</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ["hello world"];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="firing-multiple-functions" class="anchor" href="#firing-multiple-functions"><span class="octicon octicon-link"></span></a>Firing multiple functions</h3>
+
+<p>We can fire multiple functions. Once they are all fired, the callback will contain an array of all three results.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="p">[</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"hello world"</span><span class="p">;</span>
+<span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"hello moon"</span><span class="p">;</span>
+<span class="p">},</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"hello sun"</span><span class="p">;</span>
+<span class="p">}];</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ["hello world", "hello moon", "hello sun"];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="asynchronous-callbacks" class="anchor" href="#asynchronous-callbacks"><span class="octicon octicon-link"></span></a>Asynchronous callbacks</h3>
+
+<p>Every function has a "done" function as its first parameter. Instead of using return, you can fire the done function when you are ready. This is useful for timeouts, ajax calls and asynchronous node processes. Note that even though the third function will complete before the first function, the results are still returned in the order the functions are added to the array.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="p">[</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+       <span class="nx">done</span><span class="p">(</span><span class="s2">"hello world"</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+       <span class="nx">done</span><span class="p">(</span><span class="s2">"hello moon"</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">1500</span><span class="p">);</span>
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+       <span class="nx">done</span><span class="p">(</span><span class="s2">"hello sun"</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">}];</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ["hello world", "hello moon", "hello sun"];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="passing-in-parameters" class="anchor" href="#passing-in-parameters"><span class="octicon octicon-link"></span></a>Passing in parameters</h3>
+
+<p>Every function has a "done" function as its first parameter. Instead of using return, you can fire the done function when you are ready. This is useful for timeouts, ajax calls and asynchronous node processes. Note that even though the third function will complete before the first function, the results are still returned in the order the functions are added to the array. You can pass up to 15 parameters into the filter array.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="p">[</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">,</span> <span class="nx">exclamation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span> <span class="o">+</span> <span class="s2">" world"</span> <span class="o">+</span> <span class="nx">exclamation</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">,</span> <span class="nx">exclamation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span> <span class="o">+</span> <span class="s2">" moon"</span> <span class="o">+</span> <span class="nx">exclamation</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">,</span> <span class="nx">exclamation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span> <span class="o">+</span> <span class="s2">" sun"</span> <span class="o">+</span> <span class="nx">exclamation</span><span class="p">;</span>
+<span class="p">}];</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// ["hello world!", "hello moon!", "hello sun!"];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+
+<span class="p">},</span> <span class="p">[</span><span class="s2">"hello"</span><span class="p">,</span> <span class="s2">"!"</span><span class="p">]);</span>
+</pre></div>
+
+<h3>
+<a name="passing-in-different-parameters-for-each-function" class="anchor" href="#passing-in-different-parameters-for-each-function"><span class="octicon octicon-link"></span></a>Passing in different parameters for each function</h3>
+
+<p>If you provide an array of filters, each one will be applied to the function with the same index.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="p">[</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span><span class="p">;</span>
+<span class="p">}];</span>
+
+<span class="kd">var</span> <span class="nx">filters</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">[</span><span class="s2">"hello world"</span><span class="p">],</span>
+  <span class="p">[</span><span class="s2">"hello moon"</span><span class="p">],</span>
+  <span class="p">[</span><span class="s2">"hello sun"</span><span class="p">]</span>
+<span class="p">];</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// ["hello world", "hello moon", "hello sun"];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+
+<span class="p">},</span> <span class="nx">filters</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="passing-the-filters-as-a-function" class="anchor" href="#passing-the-filters-as-a-function"><span class="octicon octicon-link"></span></a>Passing the filters as a function</h3>
+
+<p>You can use a function for the filters instead of an array. The function will include a "done" function to use as a callback and the index of the function being called.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="p">[</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span><span class="p">;</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">hello</span><span class="p">;</span>
+<span class="p">}];</span>
+
+<span class="kd">var</span> <span class="nx">filters</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">switch</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+      <span class="nx">done</span><span class="p">(</span><span class="s2">"hello world"</span><span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+      <span class="nx">done</span><span class="p">(</span><span class="s2">"hello moon"</span><span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+      <span class="nx">done</span><span class="p">(</span><span class="s2">"hello sun"</span><span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// ["hello world", "hello moon", "hello sun"];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+
+<span class="p">},</span> <span class="nx">filters</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="setting-the-context" class="anchor" href="#setting-the-context"><span class="octicon octicon-link"></span></a>Setting the context</h3>
+
+<p>You can pass the context for the functions and the callback as the fourth parameter in the _.fire() function. If the context is passed in, "this" will refer to the context you have provided.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fns</span> <span class="o">=</span> <span class="p">[</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="c1">// true</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isRightContext</span><span class="p">);</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}];</span>
+
+<span class="kd">var</span> <span class="nx">Context</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">isRightContext</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">fire</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="nx">_</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span> <span class="nx">fns</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="c1">// true</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isRightContext</span><span class="p">);</span>
+
+        <span class="p">},</span> <span class="p">[],</span> <span class="k">this</span><span class="p">);</span>
+
+    <span class="p">};</span>
+
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Context</span><span class="p">();</span>
+<span class="nx">context</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+</pre></div>
         </article>
       </div>
     </div>
     <footer>
       <div class="owner">
-      <p><a href="https://github.com/tysoncadenhead" class="avatar"><img src="https://1.gravatar.com/avatar/283773207d6e2c2b9f2a86f7088a7328?d=https%3A%2F%2Fidenticons.github.com%2F70b7d791697cba729a8d743378a217b5.png&amp;r=x&amp;s=60" width="48" height="48"/></a> <a href="https://github.com/tysoncadenhead">tysoncadenhead</a> maintains <a href="https://github.com/tysoncadenhead/underscore-fire">Underscore-fire</a></p>
+      <p><a href="https://github.com/tysoncadenhead" class="avatar"><img src="https://0.gravatar.com/avatar/283773207d6e2c2b9f2a86f7088a7328?d=https%3A%2F%2Fidenticons.github.com%2F70b7d791697cba729a8d743378a217b5.png&amp;r=x&amp;s=60" width="48" height="48"/></a> <a href="https://github.com/tysoncadenhead">tysoncadenhead</a> maintains <a href="https://github.com/tysoncadenhead/underscore-fire">Underscore-fire</a></p>
 
 
       </div>
